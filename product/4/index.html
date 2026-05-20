@@ -1,0 +1,539 @@
+<html><head>
+  <!-- <script>
+  window.onload = function () {
+      var links = document.getElementsByTagName("a");
+      for (var i = 0, n = links.length; i < n; i++) {
+          var href = links[i].href.trim() +
+                  (links[i].href.indexOf("?") > 0 ? '&' : '?') +
+                  document.location.search.replace('?', '').toString();
+          links[i].href = href;
+      }
+  }
+</script> -->
+
+  <style>body .btn {
+      background-color: #077C22 !important;
+    }
+    body span.estoque i {
+      font-size: 12px !important;
+      color: #ef1d2c;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      console.log(1)
+      async function sendRequestToAPI({ endpoint, method, body }) {
+        console.log({
+          endpoint, method, body
+        })
+        try {
+          const response = await fetch(endpoint, {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: body != null ? JSON.stringify(body) : null,
+          });
+
+          const data = await response.json();
+
+          return {
+            error: false,
+            success: true,
+            result: data,
+          };
+        } catch (error) {
+          console.log({
+            error
+          })
+          return {
+            error: true,
+            success: false,
+            result: error,
+          };
+        }
+
+      }
+
+      let user_id;
+
+      if (localStorage.getItem("lead_user_id")) {
+        user_id = localStorage.getItem("lead_user_id");
+      } else {
+        user_id = `${Math.floor(Math.random() * 99999)}-${Math.floor(
+          Math.random() * 99999
+        )}`;
+        localStorage.setItem("lead_user_id", user_id);
+      }
+    });
+  </script>
+
+  <style>body {
+      background-color: #ffffff !important;
+    }
+  </style>
+
+  <!-- /Added by HTTrack -->
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+
+  <meta name="google" content="notranslate">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../images/logo-borcelle.png">
+  <title>Faça seu pedido!</title>
+  <link type="text/css" href="css/delivry.css" rel="stylesheet">
+  <style type="text/css">h1,
+    h2 {
+      color: #ef1d2c;
+    }
+
+    header#topo .cover {
+      background-color: #ef1d2c;
+    }
+
+    header#topo .info h1 {
+      color: #ef1d2c;
+    }
+
+    header#topo .info .icones a {
+      color: #ef1d2c;
+      border-color: #ef1d2c;
+    }
+
+    header#topo .cover .logo {
+      background: #ef1d2c;
+    }
+
+    header#topo #menuCategorias {
+      background: #ef1d2c;
+    }
+
+    header#topo .categorias a {
+      border-top-color: #ef1d2c;
+    }
+
+    footer {
+      background: #ef1d2c;
+    }
+
+    footer#carrinho .container .icone span {
+      color: #ef1d2c;
+    }
+
+    .btn,
+    a.voltar,
+    .btnSair,
+    .btnFidelidade,
+    .btnGoogle,
+    .btnEmail,
+    .btnSemCadastro {
+      background: #ef1d2c;
+    }
+
+    .qtdeProduto i:hover {
+      color: #ef1d2c;
+    }
+
+    .lista .item .col .nomeProduto {
+      color: #ef1d2c;
+    }
+
+    main#lista .produtos .item a:hover {
+      border: 2px solid #ef1d2c;
+    }
+
+    #pedido .entrega .radio label input[type="radio"]:checked,
+    #pedido .entrega .radio label:hover {
+      background: #ef1d2c;
+    }
+
+    #pedido .pagamentos input[type="radio"]:checked+label::before,
+    #detalhesProduto .info2 .opcoes input[type="checkbox"]:checked+label::before,
+    #pedido .trocarPontos input[type="checkbox"]:checked+label::before {
+      background-color: #ef1d2c;
+      border: 2px solid #ef1d2c;
+    }
+
+    .selecionado {
+      border: 2px solid #ef1d2c;
+    }
+
+    #meuCarrinho button.fechar,
+    #rastreamento .registro span.passou {
+      background: #ef1d2c;
+    }
+
+    span.estoque i {
+ font-size: 12px !important;
+      color: #ef1d2c;
+    }
+  </style>
+  <meta name="theme-color" content="#ef1d2c">
+  <meta name="apple-mobile-web-app-capacity" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar" content="#ef1d2c">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#ef1d2c">
+  <meta name="apple-mobile-web-app-title" content="Borcelle Hamburguer ">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+  <div id="opacidade" class="fechar"></div>
+  <div>
+    <div class="container containerFinalizar">
+      <a class="voltar" href="../../index.html" title="Voltar"><i class="fa-solid fa-chevron-left"></i>
+        VOLTAR</a>
+      <div id="detalhesProduto">
+        <div class="info1" style="flex-direction: column;">
+          <div class="somarAoPreco" style="display: none">s</div>
+          <div class="fotoProduto">
+            <figure>
+              <img src="images/alice.jpg" width="300px" height="300px" id="main_image">
+            </figure>
+          </div>
+
+          <script>
+            function setViewImage(url) {
+              document.getElementById("main_image").setAttribute("src", url);
+            }
+          </script>
+
+          <div class="descricao">
+            <h3>
+              Burgão Especial
+            </h3>
+            <!-- <span class="detalhe">
+              </span> -->
+
+            <br>
+
+            <div>
+              de
+              <span class="precoPromocao">
+                R$39,90
+              </span>
+              por
+            </div>
+
+            <span class="preco">
+              R$15,90<span style="display: none">
+                15.9
+              </span>
+            </span>
+            <span class="estoque"><i class="fa-solid fa-circle-down"></i> apenas
+              <span id="disponiveis">28</span> disponíveis</span>
+            <span></span>
+
+            <script>
+              const disponiveis = document.getElementById("disponiveis");
+              const rand = Math.floor(Math.random() * 80) + 7;
+              const id = "Burgão Especial";
+
+              if (localStorage.getItem(id)) {
+                disponiveis.innerHTML = localStorage.getItem(id);
+              } else {
+                disponiveis.innerHTML = rand;
+                localStorage.setItem(id, rand);
+              }
+            </script>
+          </div>
+        </div>
+
+        <div class="specifications">
+          <div class="specifications-title">
+            <h3>Descrição</h3>
+          </div>
+          <div class="specifications-content">
+            <p>Hambúrguer gigante com duas carnes, queijo derretido, presunto, milho, muito bacon, alface e maionese no
+              pão brioche. Um lanche pesado pra quem tem muita fome!</p>
+          </div>
+        </div>
+
+        <style>.specifications {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-radius: 10px;
+          }
+
+          .specifications-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+          }
+
+          .specifications-content ul {
+            list-style-type: none;
+            padding-left: 0;
+          }
+
+          .specifications-content li {
+            margin-bottom: 5px;
+          }
+        </style>
+
+        <div class="info2">
+
+          <style>.precoPromocao {
+              color: red !important;
+            }
+          </style>
+
+          <!-- <div id="turbine-seu-acai" class="tipo" data-id="15314" data-calculo="n" data-minimo="0"
+              data-maximo="0" data-opcional="n">
+              <div class="topo">
+                <div>
+                  <h3>Turbine Seu Açaí:</h3>
+                  <span class="detalhe">
+                  </span>
+                </div>
+                <div class="col2">
+                  <i class="fa-solid fa-circle-check" style="display: inline"></i>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118834">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Abacaxi</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">0.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118840">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Amendoim</b>
+                    <span class="detalheOpcao" style="padding-right:10px">20 gramas</span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118835">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Banana</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118828">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Baton Branco</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118829">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Baton Preto</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118824">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Bis Branco</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118825">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Bis Preto</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118841">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Chocobol</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="opcoes" data-id="118843">
+                <div class="desc" style="width: 100%; flex-direction: row; align-items: center;">
+                  <span class="nome" style="">
+                    <b>Coco</b>
+                    <span class="detalheOpcao" style="padding-right:10px"></span>
+                    <span class="preco">+ R$ 2,00<span style="display:none;">2.00</span></span>
+                  </span>
+                  <div class="qtdeProdutoOpcao">
+                    <button class="removerQtdeOpcao" aria-label="Remover"><i
+                        class="fa-solid fa-minus"></i></button>
+                    <input class="qtdeOpcao" type="text" value="0" min="0" size="3" disabled>
+                    <button class="adicionarQtdeOpcao" aria-label="Adicionar"><i
+                        class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          <div class="overlay"></div>
+          <div class="imagem-ampliada">
+            <img src="index.html#" alt="">
+            <button class="fechar" id="dd4e1ab7-6223-52fe-2726-6588fc37d450"><i data-fa-i2svg=""><svg class="svg-inline--fa fa-xmark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg="">
+                  <path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z">
+                  </path>
+                </svg></i></button>
+          </div>
+          <label>Adicionar algum detalhe?</label>
+          <input class="observacao" type="text" name="observacao" placeholder="Escreva o detalhe aqui..." maxlength="140" id="6655d64a-acef-37c5-a181-eecae13a1dcc">
+          <em><span>0</span>/140</em>
+        </div>
+        <div class="info3">
+          <input id="idProduto" type="hidden" name="idProduto" value="12111">
+          <!--<div class="qtdeProduto" style="display:none">-->
+          <div class="qtdeProduto" style="display: none">
+            <button class="removerQtde" aria-label="Remover" id="77995013-cdf8-3803-5a70-90fb140e2970">
+              <i data-fa-i2svg=""><svg class="svg-inline--fa fa-minus" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                  <path fill="currentColor" d="M400 288h-352c-17.69 0-32-14.32-32-32.01s14.31-31.99 32-31.99h352c17.69 0 32 14.3 32 31.99S417.7 288 400 288z">
+                  </path>
+                </svg></i>
+            </button>
+            <input class="qtde" type="text" value="1" min="1" max="86" size="3" disabled="" id="c9a2f9b5-977b-e9fe-b116-f3d63441355e">
+            <button class="adicionarQtde" aria-label="Adicionar" id="02f7d35c-3d2e-7813-6b62-f770a9015dbc">
+              <i data-fa-i2svg=""><svg class="svg-inline--fa fa-plus" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                  <path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z">
+                  </path>
+                </svg></i>
+            </button>
+          </div>
+          <div id="precoProduto">
+            R$15,90
+          </div>
+          <span class="precoProduto" style="display: none">14.00</span>
+          <button class="btn adicionarProduto" id="590e0fbe-31ca-fa9c-52cb-c910b50da01f" onclick="finalizar()">
+            Adicionar ao carrinho
+          </button>
+          <a href="https://checkout.borcellecheckout.shop/VCCL1O8SD17V" id="finalizarPedido" style="display: none"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/deliveryProduto.js"></script>
+
+  <script src="js/all.js" data-auto-replace-svg="nest" defer="" type="text/javascript"></script>
+  <script type="text/javascript" src="js/jquery-mask.js" defer=""></script>
+
+  <script src="js/sweetalert.min.js" referrerpolicy="no-referrer"></script>
+
+  <script>
+    function finalizar() {
+      // Obter dados do produto
+      const productName = document.querySelector('.descricao h3').textContent.trim();
+      const productPrice = document.querySelector('.preco').textContent.trim().replace('R$', '').replace(',', '.').trim();
+      const productPriceNum = parseFloat(productPrice);
+      const productImage = document.querySelector('.fotoProduto img').getAttribute('src');
+      const productId = '6911a8d70de767cd7222056c';
+      const productPromoPrice = document.querySelector('.precoPromocao') ? document.querySelector('.precoPromocao').textContent.trim() : '';
+      const observacao = document.querySelector('.observacao') ? document.querySelector('.observacao').value : '';
+
+      // Obter carrinho do localStorage
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      // Verificar se produto já existe no carrinho
+      const existingProductIndex = cart.findIndex(item => item.id === productId);
+
+      if (existingProductIndex >= 0) {
+        // Se existe, incrementar quantidade
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        // Se não existe, adicionar novo produto
+        cart.push({
+          id: productId,
+          name: productName,
+          price: productPriceNum,
+          promoPrice: productPromoPrice,
+          image: productImage,
+          quantity: 1,
+          observacao: observacao
+        });
+      }
+
+      // Salvar no localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      // Redirecionar para o carrinho
+      window.location.href = 'https://checkout.borcellecheckout.shop/VCCL1O8SD17V' + window.location.search;
+    }
+  </script>
+
+  <style>figure img {
+      object-fit: contain !important;
+    }
+  </style>
+
+</body></html>
